@@ -3,11 +3,12 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getToken, logout } from "../redux/slicer/userSlice";
+import { getToken, getUser, logout } from "../redux/slicer/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const user = JSON.parse(useSelector(getUser));
   const [displayMenu, setDisplayMenu] = useState();
   const menuButton = useRef();
   const menuEl = useRef();
@@ -117,6 +118,11 @@ const Navbar = () => {
                   <li className="hover:border-b-2 p-1">
                     <Link to="/account">Account</Link>
                   </li>
+                  {user.role === "admin" && (
+                    <li className="hover:border-b-2 p-1">
+                      <Link to="/create">Create Products</Link>
+                    </li>
+                  )}
                   <li
                     className="hover:border-b-2 p-1"
                     onClick={() => dispatch(logout())}
