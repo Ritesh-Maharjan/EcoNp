@@ -1,8 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../model/Product");
 const User = require("../model/User");
+const getDataUri = require("../utils/dataUrl");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Features = require("../utils/Features");
+const cloudinary = require("cloudinary").v2;
 
 // Get all products
 const getAllProducts = asyncHandler(async (req, res, next) => {
@@ -39,6 +41,31 @@ const getProductById = asyncHandler(async (req, res, next) => {
 
 // create Product
 const createProduct = asyncHandler(async (req, res, next) => {
+
+  const files = req.files;
+
+  // looping through multiple files and getting the URI
+  const allFiles = files.map((file) => {
+    return getDataUri(file);
+  });
+
+  // await for all the files to be uploaded and storing response
+  const myCloud = await Promise.all(
+    allFiles.map(async (el) => {
+      return await cloudinary.uploader.upload(el.content);
+    })
+  );
+
+  // saving the cloudinar id and url in images to save in database
+  const images = myCloud.map((el) => {
+    return {
+      public_id: el.public_id,
+      url: el.secure_url,
+    };
+  });
+
+  req.body = { ...req.body, images}
+
   const product = await Product.create(req.body);
 
   res.status(201).json({

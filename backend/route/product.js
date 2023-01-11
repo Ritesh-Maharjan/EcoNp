@@ -10,6 +10,7 @@ const {
   deleteReview,
 } = require("../controller/product");
 const { isAuthenticatedUser, isAdmin } = require("../midlleware/auth");
+const multipleUpload = require("../midlleware/multer");
 const router = express.Router();
 
 router
@@ -18,8 +19,8 @@ router
   .get("/reviews/:id", getAllProductReview)
   .get("/:id", getProductById)
   .put("/review", isAuthenticatedUser, productReview)
-  .put("/:id", isAuthenticatedUser, isAdmin("admin"), updateProduct)
-  .post("/", isAuthenticatedUser, isAdmin("admin"), createProduct)
+  .put("/:id", multipleUpload, isAuthenticatedUser, isAdmin("admin"), updateProduct)
+  .post("/",multipleUpload, isAuthenticatedUser, isAdmin("admin"), createProduct)
   .delete("/reviews/:id", isAuthenticatedUser, deleteReview)
   .delete("/:id", isAuthenticatedUser, isAdmin("admin"), deleteProduct);
 
