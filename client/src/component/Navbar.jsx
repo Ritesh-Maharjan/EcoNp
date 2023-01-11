@@ -1,16 +1,17 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header className="h-16 bg-gray-700 sticky top-0">
+    <header className="h-[10vh] bg-gray-700 sticky top-0">
       <nav className="flex h-full items-center justify-between w-[90vw] m-auto ">
         <div>
-          <h1 className="font-bold text-xl md:text-2xl">Logo</h1>
+          <h1 className="font-bold text-xl md:text-2xl">
+            <Link to="/">Logo</Link>
+          </h1>
         </div>
         <div>
           <ul className="flex gap-2 cursor-pointer md:gap-5 md:text-lg">
-            <li className="hover:text-gray-400 hover:underline hover:text-xl">Register</li>
-            <li className="hover:text-gray-400 hover:underline hover:text-xl">Login</li>
             <li className="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,6 +30,12 @@ const Navbar = () => {
               <div className="w-5 h-5 bg-red-400 rounded-full absolute -top-2 -right-1 flex items-center justify-center z-10">
                 2
               </div>
+            </li>
+            <li className="hover:text-gray-400 hover:underline hover:text-xl">
+              <Link to="/login">Login</Link>
+            </li>
+            <li className="hover:text-gray-400 hover:underline hover:text-xl">
+              <Link to="/register">Register</Link>
             </li>
           </ul>
         </div>
