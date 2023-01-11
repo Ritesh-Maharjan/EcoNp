@@ -30,7 +30,7 @@ const Register = () => {
     const resData = await createUser(values);
 
     if (resData?.data?.sucess) {
-      dispatch(login(resData.data.token, resData.data.user));
+      dispatch(login([resData.data.token, resData.data.user]));
       navigate("/");
     } else {
       let errors = resData.response.data.message;
