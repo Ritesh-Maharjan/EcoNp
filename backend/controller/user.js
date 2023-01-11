@@ -14,10 +14,6 @@ const createUser = asyncHandler(async (req, res, next) => {
     name,
     email,
     password,
-    avatar: {
-      public_id: "https://test.com",
-      url: "https://test.com",
-    },
   });
 
   // to redirect customer back to the webpage instead of them having to login
@@ -71,8 +67,6 @@ const getUser = asyncHandler(async (req, res, next) => {
 const updateUser = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
   const { name, email } = req.body;
-
-  // we add cloudinary later then we are giving condition for the avatar
 
   await User.findByIdAndUpdate(
     id,
