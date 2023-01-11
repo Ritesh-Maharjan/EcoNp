@@ -15,7 +15,6 @@ const Register = () => {
     password: "",
   };
 
-
   // validation for all input
   const validationSchema = Yup.object({
     name: Yup.string().min(3).required("Name is required field"),
@@ -31,7 +30,7 @@ const Register = () => {
     const resData = await createUser(values);
 
     if (resData?.data?.sucess) {
-      dispatch(login(resData.data.token));
+      dispatch(login(resData.data.token, resData.data.user));
       navigate("/");
     } else {
       let errors = resData.response.data.message;
@@ -40,7 +39,7 @@ const Register = () => {
   };
 
   return (
-    <section className="w-[90vw] min-h-[90vh] m-auto flex items-center justify-center">
+    <main className="w-[90vw] min-h-[90vh] m-auto flex items-center justify-center">
       <div className="w-full max-w-sm">
         <Formik
           initialValues={initialValues}
@@ -114,7 +113,7 @@ const Register = () => {
           </Form>
         </Formik>
       </div>
-    </section>
+    </main>
   );
 };
 

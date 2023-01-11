@@ -28,10 +28,9 @@ const Login = () => {
 
   const onSubmit = async (values, actions) => {
     const resData = await loginUser(values);
-    console.log(resData);
 
     if (resData?.data?.sucess) {
-      dispatch(login(resData.data.token));
+      dispatch(login([resData.data.token, resData.data.user]));
       navigate("/");
     } else {
       let errors = resData.response.data.message;
@@ -71,7 +70,7 @@ const Login = () => {
             </div>
 
             <div className="mb-6">
-            <ErrorMessage name="password" render={renderError} />
+              <ErrorMessage name="password" render={renderError} />
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="password"
