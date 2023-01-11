@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { displayCart } from "../redux/slicer/cartSlice";
 import { getToken, getUser, logout } from "../redux/slicer/userSlice";
 
 const Navbar = () => {
@@ -42,7 +43,7 @@ const Navbar = () => {
         {!token ? (
           <div>
             <ul className="flex gap-2 cursor-pointer md:gap-5 md:text-lg">
-              <li className="relative">
+              <li className="relative" onClick={() => dispatch(displayCart())}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -71,7 +72,7 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex gap-4 items-center">
-            <div className="relative">
+            <div className="relative" onClick={() => dispatch(displayCart())}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
