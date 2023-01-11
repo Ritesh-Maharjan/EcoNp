@@ -32,7 +32,7 @@ const Navbar = () => {
   }, [displayMenu]);
 
   return (
-    <header className="h-[10vh] bg-gray-700 sticky top-0">
+    <header className="h-[10vh] bg-gray-700 sticky top-0 z-20">
       <nav className="flex h-full items-center justify-between w-[90vw] m-auto ">
         <div>
           <h1 className="font-bold text-xl md:text-2xl">
@@ -114,14 +114,16 @@ const Navbar = () => {
               {displayMenu && (
                 <ul
                   ref={menuEl}
-                  className="absolute -left-9 top-10 flex flex-col items-between justify-between  bg-gray-700 p-2"
+                  className="absolute rounded-lg -left-10 top-10 md:-left-24 md:w-40 flex flex-col items-between justify-between  bg-gray-700 p-2"
                 >
                   <li className="hover:border-b-2 p-1">
-                    <Link to="/account">Account</Link>
+                    <Link to="/account" onClick={() => setDisplayMenu(false)}>Account</Link>
                   </li>
                   {user.role === "admin" && (
-                    <li className="hover:border-b-2 p-1">
-                      <Link to="/create">Create Products</Link>
+                    <li
+                      className="hover:border-b-2 p-1"
+                    >
+                      <Link to="/create" onClick={() => setDisplayMenu(false)}>Create Products</Link>
                     </li>
                   )}
                   <li

@@ -5,7 +5,6 @@ import { displayCart, toggleCart } from "../redux/slicer/cartSlice";
 const Cart = () => {
   const dispatch = useDispatch();
   const cartMenu = useSelector(toggleCart);
-  console.log(cartMenu);
 
   return (
     <aside className="w-screen h-screen fixed flex ">
