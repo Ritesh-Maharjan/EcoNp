@@ -15,4 +15,15 @@ const createProduct = async (data, token) => {
   }
 };
 
-export { createProduct };
+const getAllProducts = async (search, filter) => {
+  try {
+    const resData = await axios.get(
+      `${BASE_URL}/product/?keyword=${search}&filter=${filter}`
+    );
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { createProduct, getAllProducts };

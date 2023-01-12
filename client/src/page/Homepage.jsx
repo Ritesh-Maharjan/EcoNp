@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import Card from "../component/Card";
+import { getAllProducts } from "../utils/productApi";
 
 const Homepage = () => {
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const resData = await getAllProducts(search, filter);
+
+      if (resData.data.success) {
+        setProducts(resData.data.products);
+      }
+    };
+
+    getProducts();
+  }, [search, filter]);
+
   return (
     <div className="w-screen min-h-[90vh]">
       <div className="flex flex-col w-[90vw] m-auto">
@@ -15,24 +33,45 @@ const Homepage = () => {
               placeholder="Search for items"
               id="search"
               className="w-full rounded-md p-1 bg-slate-200 text-gray-700"
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div className="flex gap-2">
-            <label htmlFor="filter" className="font-bold md:text-lg">Filter by:</label>
-            <select className="w-36 text-gray-700 bg-slate-200 rounded-md p-1" id="filter" >
-              <option className="rounded-md bg-slate-300">Lehenga</option>
-              <option className="rounded-md bg-slate-200">Hat</option>
-              <option className="rounded-md bg-slate-200">Socks</option>
+            <label htmlFor="filter" className="font-bold md:text-lg">
+              Filter by:
+            </label>
+            <select
+              className="w-36 text-gray-700 bg-slate-200 rounded-md p-1"
+              id="filter"
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <option value="" className="rounded-md bg-slate-300"></option>
+              <option value="thangka" className="rounded-md bg-slate-300">
+                Lehenga
+              </option>
+              <option value="Hat" className="rounded-md bg-slate-200">
+                Hat
+              </option>
+              <option value="Socks" className="rounded-md bg-slate-200">
+                Socks
+              </option>
             </select>
           </div>
         </form>
         <section className="flex flex-col my-4 gap-4">
-          <h1 className="text-center text-lg md:text-2xl font-black underline underline-offset-8">Our Products</h1>
+          <h1 className="text-center text-lg md:text-2xl font-black underline underline-offset-8">
+            Our Products
+          </h1>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {products.length === 0 ? (
+              <h1 className="h-full my-10 font-bold text-red-400 text-3xl">
+                No product found
+              </h1>
+            ) : (
+              products.map((el) => {
+                return <Card data={el} key={el._id} />;
+              })
+            )}
           </div>
           <div className="">
             <ul className="flex justify-center items-center w-full flex-wrap gap-2">
