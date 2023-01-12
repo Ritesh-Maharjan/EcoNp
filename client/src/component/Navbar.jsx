@@ -72,14 +72,17 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex gap-4 items-center">
-            <div className="relative" onClick={() => dispatch(displayCart())}>
+            <div
+              className="relative flex gap-2 cursor-pointer hover:text-xl"
+              onClick={() => dispatch(displayCart())}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6 hover:w-8 hover:h-8"
+                className="w-6 h-6"
               >
                 <path
                   strokeLinecap="round"
@@ -87,12 +90,14 @@ const Navbar = () => {
                   d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
                 />
               </svg>
-              <span className="w-5 h-5 bg-red-400 rounded-full absolute -top-2 -right-1 flex items-center justify-center z-10">
+              <span className="w-5 h-5 bg-red-400 rounded-full absolute -top-2 left-3 flex items-center justify-center z-10">
                 2
               </span>
+              Cart
             </div>
-            <div className="relative">
+            <div className="relative cursor-pointer hover:text-lg">
               <div
+                className="flex items-center"
                 ref={menuButton}
                 onClick={() => setDisplayMenu(!displayMenu)}
               >
@@ -102,7 +107,7 @@ const Navbar = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-7 h-7 hover:w-8 hover:h-8"
+                  className="w-7 h-7"
                 >
                   <path
                     strokeLinecap="round"
@@ -110,24 +115,27 @@ const Navbar = () => {
                     d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
+                Account
               </div>
               {displayMenu && (
                 <ul
                   ref={menuEl}
-                  className="absolute rounded-lg -left-10 top-10 md:-left-24 md:w-40 flex flex-col items-between justify-between  bg-gray-700 p-2"
+                  className="absolute rounded-lg right-0 top-10 w-24 md:w-40 flex flex-col items-between justify-between  bg-gray-700 p-2"
                 >
-                  <li className="hover:border-b-2 p-1">
-                    <Link to="/account" onClick={() => setDisplayMenu(false)}>Account</Link>
+                  <li className="hover:underline p-1">
+                    <Link to="/account" onClick={() => setDisplayMenu(false)}>
+                      Account
+                    </Link>
                   </li>
                   {user.role === "admin" && (
-                    <li
-                      className="hover:border-b-2 p-1"
-                    >
-                      <Link to="/create" onClick={() => setDisplayMenu(false)}>Create Products</Link>
+                    <li className="hover:underline p-1">
+                      <Link to="/create" onClick={() => setDisplayMenu(false)}>
+                        Create Products
+                      </Link>
                     </li>
                   )}
                   <li
-                    className="hover:border-b-2 p-1"
+                    className="hover:underline p-1"
                     onClick={() => dispatch(logout())}
                   >
                     Logout

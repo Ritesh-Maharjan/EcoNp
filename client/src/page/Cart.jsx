@@ -7,9 +7,9 @@ const Cart = () => {
   const cartMenu = useSelector(toggleCart);
 
   return (
-    <aside className="w-screen h-screen fixed flex ">
+    <aside>
       {cartMenu && (
-        <>
+        <div className="w-screen h-screen fixed flex">
           <div
             className="fixed right-0 text-red-400 z-10"
             onClick={() => dispatch(displayCart())}
@@ -36,7 +36,7 @@ const Cart = () => {
             <h1 className="mt-10">Your Cart Items</h1>
             <p>Your cart looks empty!!</p>
           </section>
-        </>
+        </div>
       )}
     </aside>
   );
