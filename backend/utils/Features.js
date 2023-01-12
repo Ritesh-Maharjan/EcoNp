@@ -20,15 +20,13 @@ class Features {
   }
 
   filter() {
-    // get all the query strings
-    const queryCopy = { ...this.queryStr };
-
-    // Removing some fields from queries for category
-    const removeFields = ["keyword", "page", "limit"];
-    removeFields.forEach((el) => delete queryCopy[el]);
+    // get the filter value
+    const { filter } = this.queryStr;
 
     // perform a search for the keyword
-    this.query = this.query.find(queryCopy);
+    if (filter) {
+      this.query = this.query.find({ category: filter });
+    }
     return this;
   }
 
@@ -36,8 +34,8 @@ class Features {
     const currentPage = Number(this.queryStr.page) || 1;
     const skip = resultPerPage * (currentPage - 1);
 
-    this.query = this.query.limit(resultPerPage).skip(skip)
-    return this
+    this.query = this.query.limit(resultPerPage).skip(skip);
+    return this;
   }
 }
 

@@ -8,7 +8,7 @@ const cloudinary = require("cloudinary").v2;
 
 // Get all products
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  const resultPerPage = 10;
+  const resultPerPage = req.query.page || 10;
   const productCount = await Product.count();
   const feature = new Features(Product.find(), req.query)
     .search()
@@ -41,7 +41,6 @@ const getProductById = asyncHandler(async (req, res, next) => {
 
 // create Product
 const createProduct = asyncHandler(async (req, res, next) => {
-
   const files = req.files;
 
   // looping through multiple files and getting the URI
@@ -64,7 +63,7 @@ const createProduct = asyncHandler(async (req, res, next) => {
     };
   });
 
-  req.body = { ...req.body, images}
+  req.body = { ...req.body, images };
 
   const product = await Product.create(req.body);
 
