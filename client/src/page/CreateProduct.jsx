@@ -100,7 +100,7 @@ const CreateProduct = () => {
   return (
     <div className="flex min-h-[90vh] py-10 items-center justify-center">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 md:w-[450px]"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-sm md:w-[450px]"
         onSubmit={(e) => submitProduct(e)}
       >
         <h1 className="text-black text-center font-bold text-lg mb-4">
@@ -288,6 +288,14 @@ const CreateProduct = () => {
               />
             </label>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-4 max-w-full my-4">
+          {console.log(data.images)}
+          {data.images &&
+            Array.from(data.images).map((file) => {
+              return <img src={URL.createObjectURL(file)} className="h-[300px] object-cover object-top" />;
+            })}
         </div>
 
         {error && (

@@ -12,7 +12,7 @@ const Homepage = () => {
     const getProducts = async () => {
       const resData = await getAllProducts(search, filter);
 
-      if (resData.data.success) {
+      if (resData.data?.success) {
         setProducts(resData.data.products);
       }
     };
