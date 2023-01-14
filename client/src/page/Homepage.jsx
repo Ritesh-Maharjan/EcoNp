@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Card from "../component/Card";
+import Loading from "../component/Loading";
 import { getAllProducts } from "../utils/productApi";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     const getProducts = async () => {
+      setLoading(true);
       const resData = await getAllProducts(search, filter);
+      setLoading(false);
 
       if (resData.data?.success) {
         setProducts(resData.data.products);
@@ -58,31 +62,38 @@ const Homepage = () => {
             </select>
           </div>
         </form>
+
         <section className="flex flex-col my-4 gap-4">
-          <h1 className="text-center text-lg md:text-2xl font-black underline underline-offset-8">
-            Our Products
-          </h1>
-          <div className="flex flex-wrap gap-4 justify-center">
-            {products.length === 0 ? (
-              <h1 className="h-full my-10 font-bold text-red-400 text-3xl">
-                No product found
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <h1 className="text-center text-lg md:text-2xl font-black underline underline-offset-8">
+                Our Products
               </h1>
-            ) : (
-              products.map((el) => {
-                return <Card data={el} key={el._id} />;
-              })
-            )}
-          </div>
-          <div className="">
-            <ul className="flex justify-center items-center w-full flex-wrap gap-2">
-              <li className="border-2 px-2">1</li>
-              <li className="border-2 px-2">2</li>
-              <li className="border-2 px-2">3</li>
-              <li className="border-2 px-2">4</li>
-              <li className="border-2 px-2">5</li>
-              <li className="border-2 px-2">5</li>
-            </ul>
-          </div>
+              <div className="flex flex-wrap gap-4 justify-center">
+                {products.length === 0 ? (
+                  <h1 className="h-full my-10 font-bold text-red-400 text-3xl">
+                    No product found
+                  </h1>
+                ) : (
+                  products.map((el) => {
+                    return <Card data={el} key={el._id} />;
+                  })
+                )}
+              </div>
+              <div className="">
+                <ul className="flex justify-center items-center w-full flex-wrap gap-2">
+                  <li className="border-2 px-2">1</li>
+                  <li className="border-2 px-2">2</li>
+                  <li className="border-2 px-2">3</li>
+                  <li className="border-2 px-2">4</li>
+                  <li className="border-2 px-2">5</li>
+                  <li className="border-2 px-2">5</li>
+                </ul>
+              </div>
+            </>
+          )}
         </section>
       </div>
     </div>
