@@ -38,7 +38,7 @@ const Cart = () => {
             </svg>
           </div>
 
-          <section className="bg-black opacity-80 w-full"></section>
+          <section className="bg-black opacity-80 w-full" onClick={() => dispatch(displayCart())}></section>
 
           <section className="min-h-full w-screen fixed max-w-screen md:max-w-md bg-gray-800 flex flex-col gap-4 items-center right-0 text-lg">
             <h1 className="mt-10">Your Cart Items</h1>
