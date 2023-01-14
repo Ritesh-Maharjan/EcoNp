@@ -6,6 +6,7 @@ import CreateProduct from "./page/CreateProduct";
 import Homepage from "./page/Homepage";
 import Login from "./page/Login";
 import NotFound from "./page/NotFound";
+import ProductDetail from "./page/ProductDetail";
 import Register from "./page/Register";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Cart />
           <Routes path="/">
             <Route index element={<Homepage />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/create" element={<CreateProduct />} />
             </Route>
