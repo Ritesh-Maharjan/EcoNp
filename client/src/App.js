@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import ProtectedRoute from "./component/ProtectedRoute";
-import Cart from "./page/Cart";
+import Cart from "./component/Cart";
 import CreateProduct from "./page/CreateProduct";
 import Homepage from "./page/Homepage";
 import Login from "./page/Login";

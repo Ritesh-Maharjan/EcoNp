@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loading from "../component/Loading";
 import Star from "../component/Star";
+import { addToCart } from "../redux/slicer/cartSlice";
 import { getToken, getUser } from "../redux/slicer/userSlice";
 import {
   getProduct,
@@ -29,6 +30,7 @@ const ProductDetail = () => {
   const [reviewDependency, setReviewDependency] = useState();
   const [loadingProduct, setLoadingProduct] = useState();
   const [loadingReview, setLoadingReview] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProductApi = async () => {
@@ -63,6 +65,19 @@ const ProductDetail = () => {
         return (prevState = prevState + 1);
       });
     }
+  };
+
+  // Add to cart
+
+  const addCart = () => {
+    const data = {
+      product: product._id,
+      name: product.name,
+      quantity,
+      image: product.images[0].url,
+      price: product.price,
+    };
+    dispatch(addToCart(data));
   };
 
   //   Changing review in temporary state to send to backend
@@ -163,7 +178,7 @@ const ProductDetail = () => {
                     </svg>
                   </span>
                   <span className="text-black w-12 text-center border-2 bg-white">
-                    {quantity}{" "}
+                    {quantity}
                   </span>
                   <span onClick={(e) => changeValue("decrement")}>
                     <svg
@@ -202,6 +217,7 @@ const ProductDetail = () => {
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit"
+                    onClick={addCart}
                   >
                     Add to Cart
                   </button>
