@@ -63,15 +63,14 @@ const getUser = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Update User Profile
+// Update User Email
 const updateUser = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
-  const { name, email } = req.body;
+  const { email } = req.body;
 
   await User.findByIdAndUpdate(
     id,
     {
-      name,
       email,
     },
     {
@@ -90,7 +89,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
 const updateUserPassword = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
   const { oldPassword, newPassword, confirmPassword } = req.body;
-
+  
   const user = await User.findById(id).select("+password");
 
   if (newPassword !== confirmPassword) {
@@ -117,19 +116,6 @@ const updateUserPassword = asyncHandler(async (req, res, next) => {
 // Delete user
 const deleteUser = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
-  const { oldPassword } = req.body;
-
-  if (!oldPassword) {
-    return next(new ErrorHandler("Please enter old password", 401));
-  }
-
-  const user = await User.findById(id).select("+password");
-
-  //   compare password with existing user
-  const isPasswordMatched = await user.comparePassword(oldPassword);
-
-  if (!isPasswordMatched)
-    return next(new ErrorHandler("Incorrect old password", 401));
 
   // delete user once password is same
   await User.findByIdAndDelete(id);

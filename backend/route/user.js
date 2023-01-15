@@ -18,7 +18,7 @@ router
   .post("/login", loginUser)
   .post("/forgotpassword", resetPassword)
   .get("/me", isAuthenticatedUser, getUser)
-  .put("/me/update/", isAuthenticatedUser, updateUser)
+  .put("/me/update/email", isAuthenticatedUser, updateUser)
   .put("/me/update/password", isAuthenticatedUser, updateUserPassword)
   .delete("/delete", isAuthenticatedUser, deleteUser)
   .put("/password/reset/:token", changeForgetPassword);
