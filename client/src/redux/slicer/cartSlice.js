@@ -4,15 +4,8 @@ const initialState = {
   cart: [] || localStorage.getItem("cart"),
   toggleCart: false,
   cartTotal: 0,
+  totalItems: 0,
 };
-
-// {
-//   "name": "Trashy Dress",
-//   "price": 12,
-//   "quanity": 1,
-//   "image": "asssd.com",
-//   "product": "63bb853425719c23e44d47be"
-// }
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -22,12 +15,15 @@ export const cartSlice = createSlice({
       state.toggleCart = !state.toggleCart;
     },
     addToCart: (state, action) => {
+      // Putting the quantity of the product else defaulting to 0
       let quantity =
         state.cart.find((el) => el.product === action.payload.product)
           ?.quantity || 0;
+      // Adding the quantity to the quantity
       quantity = action.payload.quantity + quantity;
 
       state.cart = [
+        // returns all the product that is not the one send by checking the product i.e. product id
         ...state.cart.filter((el) => el.product !== action.payload.product),
         {
           name: action.payload.name,
@@ -37,8 +33,11 @@ export const cartSlice = createSlice({
           product: action.payload.product,
         },
       ];
+      // changing the cart total
       state.cartTotal =
         state.cartTotal + action.payload.quantity * action.payload.price;
+
+      state.totalItems = state.cart.length;
     },
     increaseQuantity: (state, action) => {
       let quantity =
@@ -86,6 +85,7 @@ export const cartSlice = createSlice({
       ];
 
       state.cartTotal = state.cartTotal - quantity * price;
+      state.totalItems = state.cart.length;
     },
   },
 });
@@ -93,6 +93,7 @@ export const cartSlice = createSlice({
 export const getCart = (state) => state.cart.cart;
 export const toggleCart = (state) => state.cart.toggleCart;
 export const cartTotal = (state) => state.cart.cartTotal;
+export const totalItems = (state) => state.cart.totalItems;
 
 // Action creators are generated for each case reducer function
 export const {

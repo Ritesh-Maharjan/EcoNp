@@ -3,13 +3,14 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { displayCart } from "../redux/slicer/cartSlice";
+import { displayCart, totalItems } from "../redux/slicer/cartSlice";
 import { getToken, getUser, logout } from "../redux/slicer/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
   const user = JSON.parse(useSelector(getUser));
+  const cartItems = useSelector(totalItems);
   const [displayMenu, setDisplayMenu] = useState();
   const menuButton = useRef();
   const menuEl = useRef();
@@ -59,7 +60,7 @@ const Navbar = () => {
                   />
                 </svg>
                 <div className="w-5 h-5 bg-red-400 rounded-full absolute -top-2 -right-1 flex items-center justify-center z-10">
-                  2
+                  {cartItems}
                 </div>
               </li>
               <li className="hover:text-gray-400 hover:underline hover:text-xl">
@@ -91,7 +92,7 @@ const Navbar = () => {
                 />
               </svg>
               <span className="w-5 h-5 bg-red-400 rounded-full absolute -top-2 left-3 flex items-center justify-center z-10">
-                2
+                {cartItems}
               </span>
               Cart
             </div>
@@ -123,8 +124,8 @@ const Navbar = () => {
                   className="absolute rounded-lg right-0 top-10 w-24 md:w-40 flex flex-col items-between justify-between  bg-gray-700 p-2"
                 >
                   <li className="hover:underline p-1">
-                    <Link to="/account" onClick={() => setDisplayMenu(false)}>
-                      Account
+                    <Link to="/profile" onClick={() => setDisplayMenu(false)}>
+                      Profile
                     </Link>
                   </li>
                   {user.role === "admin" && (
