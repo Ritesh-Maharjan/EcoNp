@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const crypto = require("crypto");
 const User = require("../model/User");
+const Product = require("../model/Product");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendToken = require("../utils/jwtToken");
 const sendMail = require("../utils/sendMail");
@@ -89,7 +91,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
 const updateUserPassword = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
   const { oldPassword, newPassword, confirmPassword } = req.body;
-  
+
   const user = await User.findById(id).select("+password");
 
   if (newPassword !== confirmPassword) {
@@ -117,8 +119,33 @@ const updateUserPassword = asyncHandler(async (req, res, next) => {
 const deleteUser = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
 
-  // delete user once password is same
   await User.findByIdAndDelete(id);
+
+  // Delete all the reviews made by this user
+  const reviewedProduct = await Product.find({ "reviews.user": id });
+
+  // checking if there is any reviews made by the user
+  if (reviewedProduct.length > 0) {
+    // going through all the reviews in different products and removing the comments and changing the totalRatings and rating also
+    reviewedProduct.forEach((product) => {
+      const updatedReviews = product.reviews.filter((el) => {
+        return el.user.toString() !== id;
+      });
+
+      product.reviews = updatedReviews;
+      product.numOfReviews -= 1;
+      let totalRatings = 0;
+      product.reviews.map((el) => {
+        totalRatings += el.rating;
+      });
+      if (product.numOfReviews > 0) {
+        product.ratings = totalRatings / product.numOfReviews;
+      } else {
+        product.ratings = 0;
+      }
+      product.save();
+    });
+  }
 
   res.status(200).json({
     sucess: true,

@@ -71,14 +71,14 @@ const Profile = () => {
 
   const deleteAcc = async () => {
     const resData = await deleteUser(token);
-    console.log(resData);
     if (resData.data?.sucess) {
-      console.log("Account deleted successfully");
       setDeleteAccPasswordError("");
       navigate("/");
       dispatch(logout());
+      dispatch(togglePopup());
     } else {
       setDeleteAccPasswordError(resData.response?.data?.message);
+      dispatch(togglePopup());
     }
   };
 
