@@ -8,6 +8,7 @@ const {
   productReview,
   getAllProductReview,
   deleteReview,
+  getCategories,
 } = require("../controller/product");
 const { isAuthenticatedUser, isAdmin } = require("../midlleware/auth");
 const multipleUpload = require("../midlleware/multer");
@@ -16,6 +17,7 @@ const router = express.Router();
 router
   .all("")
   .get("/", getAllProducts)
+  .get("/category", getCategories)
   .get("/reviews/:id", getAllProductReview)
   .get("/:id", getProductById)
   .put("/review", isAuthenticatedUser, productReview)

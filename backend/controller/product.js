@@ -219,6 +219,18 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   });
 });
 
+// Get categories
+const getCategories = asyncHandler(async (req, res, next) => {
+  const categories = await Product.find({})
+    .select({ category: 1, _id: 0 })
+    .distinct("category");
+
+  return res.status(200).json({
+    success: true,
+    categories,
+  });
+});
+
 module.exports = {
   createProduct,
   getAllProducts,
@@ -228,4 +240,5 @@ module.exports = {
   productReview,
   getAllProductReview,
   deleteReview,
+  getCategories
 };

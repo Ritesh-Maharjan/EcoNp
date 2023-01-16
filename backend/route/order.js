@@ -6,6 +6,7 @@ const {
   getAllOrderAdmin,
   updateOrderStatus,
   deleteOrder,
+  payment,
 } = require("../controller/order");
 const { isAuthenticatedUser, isAdmin } = require("../midlleware/auth");
 const router = express.Router();
@@ -15,6 +16,7 @@ router
   .get("/", isAuthenticatedUser, getAllOrder)
   .get("/admin", isAuthenticatedUser, isAdmin("admin"), getAllOrderAdmin)
   .get("/:id", isAuthenticatedUser, getOrder)
+  .post("/payment", isAuthenticatedUser, payment)
   .post("/new", isAuthenticatedUser, createOrder)
   .put(
     "/updatestatus/:id",

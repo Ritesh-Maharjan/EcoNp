@@ -1,7 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../model/Order");
+require("dotenv").config();
 const Product = require("../model/Product");
 const ErrorHandler = require("../utils/ErrorHandler");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 // Create Order
 const createOrder = asyncHandler(async (req, res, next) => {
@@ -109,6 +111,32 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
   });
 });
 
+const payment = asyncHandler(async (req, res, next) => {
+  const testing = await Promise.all(
+    req.body.map(async (item) => {
+      const storeItem = await Product.findById(item.product);
+      return {
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: storeItem.name,
+          },
+          unit_amount: storeItem.price * 100,
+        },
+        quantity: item.quantity,
+      };
+    })
+  );
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: testing,
+    mode: "payment",
+    success_url: `http://localhost:3000/success.html`,
+    cancel_url: `http://localhost:3000/cancel.html`,
+  });
+  res.send(session.url);
+});
+
 module.exports = {
   createOrder,
   getAllOrder,
@@ -116,4 +144,5 @@ module.exports = {
   getAllOrderAdmin,
   updateOrderStatus,
   deleteOrder,
+  payment,
 };
