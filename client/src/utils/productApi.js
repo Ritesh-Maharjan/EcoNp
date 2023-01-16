@@ -61,10 +61,22 @@ const submitReview = async (token, data) => {
     return err;
   }
 };
+
+// get categories
+const getCategoryApi = async () => {
+  try {
+    const resData = await axios.get(`${BASE_URL}/product/category`);
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   createProduct,
   getAllProducts,
   getProduct,
   getProductReview,
   submitReview,
+  getCategoryApi,
 };

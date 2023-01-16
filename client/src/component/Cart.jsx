@@ -6,13 +6,24 @@ import {
   getCart,
   toggleCart,
 } from "../redux/slicer/cartSlice";
+import { getToken } from "../redux/slicer/userSlice";
+import { orderItemsApi } from "../utils/orderApi";
 import CartItems from "./CartItems";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartMenu = useSelector(toggleCart);
   const total = useSelector(cartTotal);
   const cartItems = useSelector(getCart);
+  const token = useSelector(getToken);
+
+  const orderItems = async () => {
+    const resData = await orderItemsApi(token, cartItems);
+    console.log(resData);
+    navigate(resData)
+  };
 
   return (
     <aside>
@@ -38,7 +49,10 @@ const Cart = () => {
             </svg>
           </div>
 
-          <section className="bg-black opacity-80 w-full" onClick={() => dispatch(displayCart())}></section>
+          <section
+            className="bg-black opacity-80 w-full"
+            onClick={() => dispatch(displayCart())}
+          ></section>
 
           <section className="min-h-full w-screen fixed max-w-screen md:max-w-md bg-gray-800 flex flex-col gap-4 items-center right-0 text-lg">
             <h1 className="mt-10">Your Cart Items</h1>
@@ -51,6 +65,7 @@ const Cart = () => {
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="submit"
+                  onClick={orderItems}
                 >
                   Checkout
                 </button>

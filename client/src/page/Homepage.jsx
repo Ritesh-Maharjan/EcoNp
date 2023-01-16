@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Card from "../component/Card";
 import Loading from "../component/Loading";
-import { getAllProducts } from "../utils/productApi";
+import { getAllProducts, getCategoryApi } from "../utils/productApi";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState();
+  const [category, setCategory] = useState();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -21,7 +22,13 @@ const Homepage = () => {
       }
     };
 
+    const getCategory = async () => {
+      const resData = await getCategoryApi();
+      setCategory(resData.data.categories);
+    };
+
     getProducts();
+    getCategory();
   }, [search, filter]);
 
   return (
@@ -50,15 +57,18 @@ const Homepage = () => {
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="" className="rounded-md bg-slate-300"></option>
-              <option value="thangka" className="rounded-md bg-slate-300">
-                Lehenga
-              </option>
-              <option value="Hat" className="rounded-md bg-slate-200">
-                Hat
-              </option>
-              <option value="Socks" className="rounded-md bg-slate-200">
-                Socks
-              </option>
+              {category &&
+                category.map((el) => {
+                  return (
+                    <option
+                      value={el}
+                      className="rounded-md bg-slate-300 text-black"
+                      key={el}
+                    >
+                      {el}
+                    </option>
+                  );
+                })}
             </select>
           </div>
         </form>

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   cart: [] || localStorage.getItem("cart"),
@@ -22,17 +22,17 @@ export const cartSlice = createSlice({
       // Adding the quantity to the quantity
       quantity = action.payload.quantity + quantity;
 
-      state.cart = [
-        // returns all the product that is not the one send by checking the product i.e. product id
-        ...state.cart.filter((el) => el.product !== action.payload.product),
-        {
-          name: action.payload.name,
-          price: action.payload.price,
-          quantity,
-          image: action.payload.image,
-          product: action.payload.product,
-        },
-      ];
+      const isPresent = state.cart.findIndex(
+        (el) => el.product === action.payload.product
+      );
+      if (isPresent >= 0) {
+        let tempObj = state.cart[isPresent];
+        tempObj.quantity = quantity;
+        state.cart[isPresent] = tempObj;
+      } else {
+        state.cart.push(action.payload);
+      }
+
       // changing the cart total
       state.cartTotal =
         state.cartTotal + action.payload.quantity * action.payload.price;
@@ -44,33 +44,33 @@ export const cartSlice = createSlice({
         state.cart.find((el) => el.product === action.payload.product)
           ?.quantity + 1;
 
-      state.cart = [
-        ...state.cart.filter((el) => el.product !== action.payload.product),
-        {
-          name: action.payload.name,
-          price: action.payload.price,
-          quantity,
-          image: action.payload.image,
-          product: action.payload.product,
-        },
-      ];
+      const isPresent = state.cart.findIndex(
+        (el) => el.product === action.payload.product
+      );
+      if (isPresent >= 0) {
+        let tempObj = state.cart[isPresent];
+        tempObj.quantity = quantity;
+        state.cart[isPresent] = tempObj;
+      } else {
+        state.cart.push(action.payload);
+      }
       state.cartTotal = state.cartTotal + action.payload.price;
     },
     decreaseQuantity: (state, action) => {
       let quantity =
         state.cart.find((el) => el.product === action.payload.product)
           ?.quantity - 1;
+      const isPresent = state.cart.findIndex(
+        (el) => el.product === action.payload.product
+      );
+      if (isPresent >= 0) {
+        let tempObj = state.cart[isPresent];
+        tempObj.quantity = quantity;
+        state.cart[isPresent] = tempObj;
+      } else {
+        state.cart.push(action.payload);
+      }
 
-      state.cart = [
-        ...state.cart.filter((el) => el.product !== action.payload.product),
-        {
-          name: action.payload.name,
-          price: action.payload.price,
-          quantity,
-          image: action.payload.image,
-          product: action.payload.product,
-        },
-      ];
       state.cartTotal = state.cartTotal - action.payload.price;
     },
     removeFromCart: (state, action) => {
