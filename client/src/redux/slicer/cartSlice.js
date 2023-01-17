@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   cart: [] || localStorage.getItem("cart"),
@@ -22,9 +22,11 @@ export const cartSlice = createSlice({
       // Adding the quantity to the quantity
       quantity = action.payload.quantity + quantity;
 
+      // checking if the product exists in the cart or not
       const isPresent = state.cart.findIndex(
         (el) => el.product === action.payload.product
       );
+      // if product exists then just change the quantity
       if (isPresent >= 0) {
         let tempObj = state.cart[isPresent];
         tempObj.quantity = quantity;
@@ -37,6 +39,7 @@ export const cartSlice = createSlice({
       state.cartTotal =
         state.cartTotal + action.payload.quantity * action.payload.price;
 
+      // set total item
       state.totalItems = state.cart.length;
     },
     increaseQuantity: (state, action) => {

@@ -22,13 +22,13 @@ const Cart = () => {
   const orderItems = async () => {
     const resData = await orderItemsApi(token, cartItems);
     console.log(resData);
-    navigate(resData)
+    navigate(resData);
   };
 
   return (
     <aside>
       {cartMenu && (
-        <div className="w-screen min-h-screen overflow-scroll fixed flex">
+        <div className="w-screen min-h-screen fixed flex">
           <div
             className="fixed right-0 text-red-400 z-10"
             onClick={() => dispatch(displayCart())}
@@ -54,7 +54,7 @@ const Cart = () => {
             onClick={() => dispatch(displayCart())}
           ></section>
 
-          <section className="min-h-full w-screen fixed max-w-screen md:max-w-md bg-gray-800 flex flex-col gap-4 items-center right-0 text-lg">
+          <section className="min-h-full w-screen fixed overflow-scroll no-scrollbar max-w-screen md:max-w-md bg-gray-800 flex flex-col gap-4 items-center top-0 bottom-0 right-0 text-lg py-10">
             <h1 className="mt-10">Your Cart Items</h1>
             {cartItems.length > 0 ? (
               <>
