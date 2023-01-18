@@ -9,6 +9,7 @@ import NotFound from "./page/NotFound";
 import ProductDetail from "./page/ProductDetail";
 import Register from "./page/Register";
 import Profile from "./page/Profile";
+import Shipping from "./page/Shipping";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/create" element={<CreateProduct />} />
             </Route>
+            <Route path="/shipping" element={<Shipping />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
