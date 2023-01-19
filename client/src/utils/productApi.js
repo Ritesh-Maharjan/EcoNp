@@ -16,6 +16,20 @@ const createProduct = async (data, token) => {
   }
 };
 
+// update products
+const updateProduct = async (id, data, token) => {
+  try {
+    const resData = await axios.put(`${BASE_URL}/product/${id}`, data, {
+      headers: {
+        Authorization: `Bearers ${token}`,
+      },
+    });
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
 // get all products
 const getAllProducts = async (search, filter) => {
   try {
@@ -79,4 +93,5 @@ export {
   getProductReview,
   submitReview,
   getCategoryApi,
+  updateProduct
 };

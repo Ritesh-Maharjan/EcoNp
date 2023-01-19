@@ -10,6 +10,7 @@ import ProductDetail from "./page/ProductDetail";
 import Register from "./page/Register";
 import Profile from "./page/Profile";
 import Shipping from "./page/Shipping";
+import UpdateProduct from "./page/UpdateProduct";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/create" element={<CreateProduct />} />
+              <Route path="/update/:id" element={<UpdateProduct />} />
             </Route>
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/profile" element={<Profile />} />
