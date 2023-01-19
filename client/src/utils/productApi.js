@@ -52,7 +52,21 @@ const getProduct = async (id) => {
   }
 };
 
-// get a single product
+// Delete Product
+const deleteProduct = async (id, token) => {
+  try {
+    const resData = await axios.delete(`${BASE_URL}/product/${id}`, {
+      headers: {
+        Authorization: `Bearers ${token}`,
+      },
+    });
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
+// get a product review
 const getProductReview = async (id) => {
   try {
     const resData = await axios.get(`${BASE_URL}/product/reviews/${id}`);
@@ -93,5 +107,6 @@ export {
   getProductReview,
   submitReview,
   getCategoryApi,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };

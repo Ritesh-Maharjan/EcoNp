@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../component/Loading";
 import Star from "../component/Star";
 import { addToCart } from "../redux/slicer/cartSlice";
 import { getToken, getUser } from "../redux/slicer/userSlice";
 import {
+  deleteProduct,
   getProduct,
   getProductReview,
   submitReview,
@@ -14,6 +15,7 @@ import {
 
 const ProductDetail = () => {
   const param = useParams();
+  const navigate = useNavigate();
   const { id } = param;
   const user = JSON.parse(useSelector(getUser));
   const token = useSelector(getToken);
@@ -68,7 +70,6 @@ const ProductDetail = () => {
   };
 
   // Add to cart
-
   const addCart = () => {
     const data = {
       product: product._id,
@@ -106,6 +107,14 @@ const ProductDetail = () => {
       });
       //   to call the useEffect api and get the updated review
       setReviewDependency((prevState) => !prevState);
+    }
+  };
+
+  // Delete the product
+  const deleteProductApi = async () => {
+    const resData = await deleteProduct(id, token);
+    if(resData.data.success){
+      navigate("/")
     }
   };
 
@@ -210,6 +219,7 @@ const ProductDetail = () => {
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                       type="submit"
+                      onClick={deleteProductApi}
                     >
                       Delete
                     </button>
