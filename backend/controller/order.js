@@ -132,22 +132,29 @@ const payment = asyncHandler(async (req, res, next) => {
     shipping_options: [
       {
         shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {amount: 500, currency: 'cad'},
-          display_name: 'Free shipping',
+          type: "fixed_amount",
+          fixed_amount: { amount: 500, currency: "cad" },
+          display_name: "Free shipping",
           delivery_estimate: {
-            minimum: {unit: 'business_day', value: 5},
-            maximum: {unit: 'business_day', value: 7},
+            minimum: { unit: "business_day", value: 5 },
+            maximum: { unit: "business_day", value: 7 },
           },
         },
       },
-    ],  
+    ],
     line_items: testing,
     mode: "payment",
-    success_url: `http://localhost:3000/success.html`,
+    success_url: `http://localhost:3000/orders`,
     cancel_url: `http://localhost:3000/cancel.html`,
   });
-  res.send(session.url);
+  res.status(200).json({
+    success: true,
+    data: {
+      id: session.id,
+      status: session.status,
+      url: session.url
+    },
+  });
 });
 
 module.exports = {
