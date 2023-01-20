@@ -113,8 +113,8 @@ const ProductDetail = () => {
   // Delete the product
   const deleteProductApi = async () => {
     const resData = await deleteProduct(id, token);
-    if(resData.data.success){
-      navigate("/")
+    if (resData.data.success) {
+      navigate("/");
     }
   };
 
@@ -129,26 +129,38 @@ const ProductDetail = () => {
               {errors && <p className="text-center text-red-400">{errors}</p>}
               {/* Images */}
               <div className="flex flex-col items-center gap-4 flex-1">
-                <div>
-                  <img
-                    src={mainImage}
-                    alt="main product"
-                    className="h-[400px] sm:h-[500px] object-cover"
-                  />
-                </div>
-                <div className="flex gap-2 overflow-hidden">
-                  {product.images.map((el) => {
-                    return (
+                {product.images.length > 0 ? (
+                  <>
+                    <div>
                       <img
-                        key={el.public_id}
-                        src={el.url}
-                        alt="different view"
-                        className="h-[50px] w-[70px] sm:w-[100px] sm:h-[100px] object-cover object-top"
-                        onClick={(e) => setMainImage(el.url)}
+                        src={mainImage}
+                        alt="main product"
+                        className="h-[400px] sm:h-[500px] object-cover"
                       />
-                    );
-                  })}
-                </div>
+                    </div>
+                    <div className="flex gap-2 overflow-hidden">
+                      {product.images.map((el) => {
+                        return (
+                          <img
+                            key={el.public_id}
+                            src={el.url}
+                            alt="different view"
+                            className="h-[50px] w-[70px] sm:w-[100px] sm:h-[100px] object-cover object-top"
+                            onClick={(e) => setMainImage(el.url)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <img
+                    className="w-[450px] h-[250px]"
+                    src={
+                      "https://imgs.search.brave.com/dFhbkHCOtMiyZ1lYDAcOXVSNCIyhL4tnvqeFy94jYhU/rs:fit:433:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5X/bkg2U0s0WlpjQVBs/M3hhNjBOclZ3QUFB/QSZwaWQ9QXBp"
+                    }
+                    alt="Images not found"
+                  />
+                )}
               </div>
 
               {/* Product Info */}

@@ -90,7 +90,7 @@ const CreateProduct = () => {
           images: "",
         });
         setError("");
-        // naviagte("/");
+        naviagte(`../product/${resData.data.product._id}`);
       } else {
         setError(resData.response.data.message);
       }
@@ -291,10 +291,16 @@ const CreateProduct = () => {
         </div>
 
         <div className="flex flex-col gap-4 max-w-full my-4">
-          {console.log(data.images)}
           {data.images &&
-            Array.from(data.images).map((file) => {
-              return <img src={URL.createObjectURL(file)} className="h-[300px] object-cover object-top" />;
+            Array.from(data.images).map((file, index) => {
+              return (
+                <img
+                  key={index}
+                  alt="preview"
+                  src={URL.createObjectURL(file)}
+                  className="h-[300px] object-cover object-top"
+                />
+              );
             })}
         </div>
 
