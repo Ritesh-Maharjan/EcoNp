@@ -14,7 +14,7 @@ const Homepage = () => {
   const [paginationLength, setPaginationlength] = useState();
 
   useEffect(() => {
-    // getting all the products 
+    // getting all the products
     const getProducts = async () => {
       setLoading(true);
       const resData = await getAllProducts(search, filter, page);
@@ -23,7 +23,7 @@ const Homepage = () => {
       if (resData.data?.success) {
         // setting up the pagination
         setPaginationlength(
-          Math.round( resData.data.totalProductCount / resData.data.perPage)
+          Math.ceil(resData.data.totalProductCount / resData.data.perPage)
         );
         setProducts(resData.data.products);
       }
@@ -52,7 +52,10 @@ const Homepage = () => {
               placeholder="Search for items"
               id="search"
               className="w-full rounded-md p-1 bg-slate-200 text-gray-700"
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
             />
           </div>
           <div className="flex gap-2">
@@ -62,9 +65,15 @@ const Homepage = () => {
             <select
               className="w-36 text-gray-700 bg-slate-200 rounded-md p-1"
               id="filter"
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={(e) => {
+                setFilter(e.target.value);
+                setPage(1);
+              }}
             >
-              <option value="" className="rounded-md cursor-pointer bg-slate-300"></option>
+              <option
+                value=""
+                className="rounded-md cursor-pointer bg-slate-300"
+              ></option>
               {category &&
                 category.map((el) => {
                   return (
