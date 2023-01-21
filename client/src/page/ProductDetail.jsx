@@ -41,7 +41,7 @@ const ProductDetail = () => {
       setLoadingProduct(false);
       if (resData?.data?.success) {
         setProduct(resData.data.product);
-        setMainImage(resData.data.product.images[0].url);
+        setMainImage(resData.data.product.images[0]?.url);
       } else {
         setErrors(resData.response.data.message);
       }

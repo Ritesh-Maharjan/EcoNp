@@ -32,7 +32,7 @@ const Homepage = () => {
   }, [search, filter]);
 
   return (
-    <div className="w-screen min-h-[90vh]">
+    <div className="min-h-[90vh]">
       <div className="flex flex-col w-[90vw] m-auto">
         <form className="flex flex-col gap-4 sm:flex-row sm:items-center justify-center w-full my-8">
           <div className="flex items-center w-[280px] gap-4">
