@@ -31,10 +31,10 @@ const updateProduct = async (id, data, token) => {
 };
 
 // get all products
-const getAllProducts = async (search, filter) => {
+const getAllProducts = async (search, filter, page) => {
   try {
     const resData = await axios.get(
-      `${BASE_URL}/product/?keyword=${search}&filter=${filter}`
+      `${BASE_URL}/product/?keyword=${search}&filter=${filter}&page=${page}`
     );
     return resData;
   } catch (err) {

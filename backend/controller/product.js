@@ -8,17 +8,26 @@ const cloudinary = require("cloudinary").v2;
 
 // Get all products
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  const resultPerPage = req.query.page || 10;
-  const productCount = await Product.count();
+  // number of products we want to display at a single time
+  const perPage = 4;
+
+  // getting the total number of products we have from the search and filter
+  const productCount = await new Features(Product.find(), req.query)
+    .search()
+    .filter().query;
+
+  // getting the products we have from the search and filter limiteede by the perPage limitation
   const feature = new Features(Product.find(), req.query)
     .search()
     .filter()
-    .pagination(resultPerPage);
+    .pagination(perPage);
   const products = await feature.query;
+
   res.status(200).json({
     success: true,
     products,
-    productCount,
+    totalProductCount: productCount.length,
+    perPage,
   });
 });
 

@@ -10,18 +10,26 @@ const Homepage = () => {
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState();
   const [category, setCategory] = useState();
+  const [page, setPage] = useState(1);
+  const [paginationLength, setPaginationlength] = useState();
 
   useEffect(() => {
+    // getting all the products 
     const getProducts = async () => {
       setLoading(true);
-      const resData = await getAllProducts(search, filter);
+      const resData = await getAllProducts(search, filter, page);
       setLoading(false);
 
       if (resData.data?.success) {
+        // setting up the pagination
+        setPaginationlength(
+          Math.round( resData.data.totalProductCount / resData.data.perPage)
+        );
         setProducts(resData.data.products);
       }
     };
 
+    // getting all the category from db to update the filter by list
     const getCategory = async () => {
       const resData = await getCategoryApi();
       setCategory(resData.data.categories);
@@ -29,7 +37,7 @@ const Homepage = () => {
 
     getProducts();
     getCategory();
-  }, [search, filter]);
+  }, [search, filter, paginationLength, page]);
 
   return (
     <div className="min-h-[90vh]">
@@ -56,7 +64,7 @@ const Homepage = () => {
               id="filter"
               onChange={(e) => setFilter(e.target.value)}
             >
-              <option value="" className="rounded-md bg-slate-300"></option>
+              <option value="" className="rounded-md cursor-pointer bg-slate-300"></option>
               {category &&
                 category.map((el) => {
                   return (
@@ -94,12 +102,18 @@ const Homepage = () => {
               </div>
               <div className="">
                 <ul className="flex justify-center items-center w-full flex-wrap gap-2">
-                  <li className="border-2 px-2">1</li>
-                  <li className="border-2 px-2">2</li>
-                  <li className="border-2 px-2">3</li>
-                  <li className="border-2 px-2">4</li>
-                  <li className="border-2 px-2">5</li>
-                  <li className="border-2 px-2">5</li>
+                  {paginationLength > 1 &&
+                    Array.from(Array(paginationLength), (e, i) => {
+                      return (
+                        <li
+                          className="border-2 px-2 cursor-pointer"
+                          key={i}
+                          onClick={() => setPage(i + 1)}
+                        >
+                          {i + 1}
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
             </>

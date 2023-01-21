@@ -30,11 +30,11 @@ class Features {
     return this;
   }
 
-  pagination(resultPerPage) {
+  pagination(perPage) {
     const currentPage = Number(this.queryStr.page) || 1;
-    const skip = resultPerPage * (currentPage - 1);
+    const skip = perPage * (currentPage - 1);
 
-    this.query = this.query.limit(resultPerPage).skip(skip);
+    this.query = this.query.limit(perPage).skip(skip);
     return this;
   }
 }
