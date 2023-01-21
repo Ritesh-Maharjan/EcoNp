@@ -81,9 +81,6 @@ const OrderSchema = new mongoose.Schema({
       required: true,
     },
   },
-  shippingPrice: {
-    type: Number,
-  },
   totalPrice: {
     type: Number,
     required: true,
@@ -91,7 +88,7 @@ const OrderSchema = new mongoose.Schema({
   orderStatus: {
     type: String,
     enum: ["Processing", "Shipped", "Delivered"],
-    default: "Processing"
+    default: "Processing",
   },
 });
 

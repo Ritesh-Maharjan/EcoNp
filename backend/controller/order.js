@@ -7,14 +7,13 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 // Create Order
 const createOrder = asyncHandler(async (req, res, next) => {
-  const { shippingInfo, orderItems, paymentInfo, shippingPrice, totalPrice } =
+  const { shippingInfo, orderItems, paymentInfo, totalPrice } =
     req.body;
 
   const order = await Order.create({
     shippingInfo,
     orderItems,
     paymentInfo,
-    shippingPrice,
     totalPrice,
     user: req.user._id,
   });
@@ -97,7 +96,6 @@ async function updateStock(id, quanity) {
 }
 
 // Delete order
-
 const deleteOrder = asyncHandler(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -112,7 +110,7 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
 });
 
 const payment = asyncHandler(async (req, res, next) => {
-  const testing = await Promise.all(
+  const allItems = await Promise.all(
     req.body.map(async (item) => {
       const storeItem = await Product.findById(item.product);
       return {
@@ -121,28 +119,18 @@ const payment = asyncHandler(async (req, res, next) => {
           product_data: {
             name: storeItem.name,
           },
-          unit_amount: storeItem.price * 100,
+          unit_amount: parseInt(storeItem.price * 100),
         },
         quantity: item.quantity,
       };
     })
   );
 
+  if (allItems.length < 1) {
+    return next(new ErrorHandler("Please add items in the cart", 400));
+  }
   const session = await stripe.checkout.sessions.create({
-    shipping_options: [
-      {
-        shipping_rate_data: {
-          type: "fixed_amount",
-          fixed_amount: { amount: 500, currency: "cad" },
-          display_name: "Free shipping",
-          delivery_estimate: {
-            minimum: { unit: "business_day", value: 5 },
-            maximum: { unit: "business_day", value: 7 },
-          },
-        },
-      },
-    ],
-    line_items: testing,
+    line_items: allItems,
     mode: "payment",
     success_url: `http://localhost:3000/orders`,
     cancel_url: `http://localhost:3000/cancel.html`,
@@ -152,7 +140,7 @@ const payment = asyncHandler(async (req, res, next) => {
     data: {
       id: session.id,
       status: session.status,
-      url: session.url
+      url: session.url,
     },
   });
 });
