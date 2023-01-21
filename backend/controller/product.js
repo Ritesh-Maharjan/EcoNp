@@ -104,7 +104,8 @@ const updateProduct = asyncHandler(async (req, res, next) => {
 
     // Delete images thats in cloudinary
     await Promise.all(
-      product.images.forEach(async (el) => {
+      // need to use map as we need to return the promise and wait it to be finished from Promise.All
+      product.images.map(async (el) => {
         return await cloudinary.uploader.destroy(el.public_id);
       })
     );
@@ -148,6 +149,14 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
     );
   }
 
+  if (product.images.length > 0) {
+    // Delete images thats in cloudinary
+    await Promise.all(
+      product.images.map(async (el) => {
+        return await cloudinary.uploader.destroy(el.public_id);
+      })
+    );
+  }
   product = await Product.findByIdAndDelete(id, req.body);
 
   res.status(200).json({
