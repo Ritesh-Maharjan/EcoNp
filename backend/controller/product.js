@@ -84,6 +84,39 @@ const updateProduct = asyncHandler(async (req, res, next) => {
     );
   }
 
+  const files = req.files;
+
+  // if images is uploaded then upload the image and get the url to save in db
+  if (files.length > 0) {
+    // looping through multiple files and getting the URI
+    const allFiles = files.map((file) => {
+      return getDataUri(file);
+    });
+
+    // Delete images thats in cloudinary
+    await Promise.all(
+      product.images.forEach(async (el) => {
+        return await cloudinary.uploader.destroy(el.public_id);
+      })
+    );
+
+    // await for all the files to be uploaded and storing response
+    const myCloud = await Promise.all(
+      allFiles.map(async (el) => {
+        return await cloudinary.uploader.upload(el.content);
+      })
+    );
+
+    // saving the cloudinar id and url in images to save in database
+    const images = myCloud.map((el) => {
+      return {
+        public_id: el.public_id,
+        url: el.secure_url,
+      };
+    });
+
+    req.body.images = images;
+  }
   product = await Product.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
@@ -240,5 +273,5 @@ module.exports = {
   productReview,
   getAllProductReview,
   deleteReview,
-  getCategories
+  getCategories,
 };
