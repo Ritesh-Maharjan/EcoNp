@@ -1,38 +1,40 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../redux/slicer/userSlice";
 import { orderItemsApi } from "../utils/orderApi";
-import { getCart } from "../redux/slicer/cartSlice";
+import { cartTotal, getCart } from "../redux/slicer/cartSlice";
+import { setOrder } from "../redux/slicer/orderSlice";
 
 const Shipping = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const token = useSelector(getToken);
   const cartItems = useSelector(getCart);
+  const total = useSelector(cartTotal);
   const [data, setData] = useState({
     address: "",
     city: "",
-    province: [
-      "NL",
-      "PE",
-      "NS",
-      "NB",
-      "QC",
-      "ON",
-      "MB",
-      "SK",
-      "BC",
-      "AB",
-      "YT",
-      "NT",
-      "NU",
-    ],
+    province: "",
     country: "",
     postalCode: "",
     phoneNo: "",
   });
   const [error, setError] = useState("");
 
+  const provinceOptions = [
+    "NL",
+    "PE",
+    "NS",
+    "NB",
+    "QC",
+    "ON",
+    "MB",
+    "SK",
+    "BC",
+    "AB",
+    "YT",
+    "NT",
+    "NU",
+  ];
   const onDataChange = (e) => {
     const { name, value } = e.target;
 
@@ -45,17 +47,51 @@ const Shipping = () => {
     setError("");
   };
 
-  const orderItems = async () => {
-    const resData = await orderItemsApi(token, cartItems);
-    console.log(resData);
-    navigate(resData);
+  const checkout = async (e) => {
+    e.preventDefault();
+
+    if (
+      data.address &&
+      data.city &&
+      data.province &&
+      data.country &&
+      data.postalCode &&
+      data.phoneNo
+    ) {
+      const resData = await orderItemsApi(token, cartItems);
+      if (resData?.data?.success) {
+        const shippingInfo = {
+          address: data.address,
+          city: data.city,
+          province: data.province,
+          country: data.country,
+          postalCode: data.postalCode,
+          phoneNo: parseInt(data.phoneNo),
+        };
+        const order = {
+          shippingInfo,
+          orderItems: cartItems,
+          paymentInfo: {
+            id: resData.data.data.id,
+            status: resData.data.data.status,
+          },
+          totalPrice: { total },
+        };
+        dispatch(setOrder(order));
+        window.location.replace(resData.data.session.url);
+      } else {
+        setError(resData.response.data.message);
+      }
+    } else {
+      setError("All fieds are required");
+    }
   };
 
   return (
     <div className="flex min-h-[90vh] py-10 items-center justify-center">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-sm md:w-[450px]"
-        onSubmit={(e) => orderItems(e)}
+        onSubmit={(e) => checkout(e)}
       >
         <h1 className="text-black text-center font-bold text-lg mb-4">
           Shipping Address
@@ -109,11 +145,22 @@ const Shipping = () => {
           </label>
           <select
             name="province"
+            onChange={(e) => onDataChange(e)}
             className="w-36 text-gray-700 border-2 rounded-md p-1"
           >
-            {data.province.map((el) => {
+            <option
+              name="province"
+              value=""
+              className="rounded-md text-black"
+            ></option>
+            {provinceOptions.map((el) => {
               return (
-                <option value={el} className="rounded-md text-black" key={el}>
+                <option
+                  name="province"
+                  value={el}
+                  className="rounded-md text-black"
+                  key={el}
+                >
                   {el}
                 </option>
               );
@@ -144,18 +191,18 @@ const Shipping = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="postal"
+            htmlFor="postalCode"
           >
             Postal code*
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="postal"
-            type="number"
-            placeholder="Enter postal"
-            name="postal"
+            id="postalCode"
+            type="string"
+            placeholder="Enter postalCode"
+            name="postalCode"
             onChange={(e) => onDataChange(e)}
-            value={data.postal}
+            value={data.postalCode}
           />
         </div>
 
@@ -164,18 +211,18 @@ const Shipping = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="phone"
+            htmlFor="phoneNo"
           >
             Phone number*
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="phone"
+            id="phoneNo"
             type="number"
-            placeholder="Enter phone"
-            name="phone"
+            placeholder="Enter phoneNo"
+            name="phoneNo"
             onChange={(e) => onDataChange(e)}
-            value={data.phone}
+            value={data.phoneNo}
           />
         </div>
 
@@ -188,7 +235,7 @@ const Shipping = () => {
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={(e) => orderItems(e)}
+            onClick={(e) => checkout(e)}
           >
             Continue
           </button>
