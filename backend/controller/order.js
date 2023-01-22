@@ -36,18 +36,6 @@ const getAllOrder = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Get single Order
-const getOrder = asyncHandler(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
-  if (!order) {
-    return next(new ErrorHandler("No order found", 404));
-  }
-  res.status(200).json({
-    success: true,
-    order,
-  });
-});
-
 // Get all orders admin
 const getAllOrderAdmin = asyncHandler(async (req, res, next) => {
   const order = await Order.find();
@@ -147,7 +135,6 @@ const payment = asyncHandler(async (req, res, next) => {
 module.exports = {
   createOrder,
   getAllOrder,
-  getOrder,
   getAllOrderAdmin,
   updateOrderStatus,
   deleteOrder,

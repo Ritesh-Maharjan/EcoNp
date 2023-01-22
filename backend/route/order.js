@@ -2,7 +2,6 @@ const express = require("express");
 const {
   createOrder,
   getAllOrder,
-  getOrder,
   getAllOrderAdmin,
   updateOrderStatus,
   deleteOrder,
@@ -15,7 +14,6 @@ router
   .all("")
   .get("/", isAuthenticatedUser, getAllOrder)
   .get("/admin", isAuthenticatedUser, isAdmin("admin"), getAllOrderAdmin)
-  .get("/:id", isAuthenticatedUser, getOrder)
   .post("/payment", isAuthenticatedUser, payment)
   .post("/new", isAuthenticatedUser, createOrder)
   .put(
