@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from "../component/Alert";
 import Loading from "../component/Loading";
 import Popup from "../component/Popup";
-import { getPopup, togglePopup } from "../redux/slicer/popupSlice";
+import {
+  getAlert,
+  getPopup,
+  toggleAlert,
+  togglePopup,
+} from "../redux/slicer/popupSlice";
 import { getToken, getUser } from "../redux/slicer/userSlice";
 import {
   deleteOrder,
@@ -16,6 +22,7 @@ const Orders = () => {
   const token = useSelector(getToken);
   const user = JSON.parse(useSelector(getUser));
   const popup = useSelector(getPopup);
+  const alert = useSelector(getAlert);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [orderData, setOrderData] = useState();
@@ -46,7 +53,8 @@ const Orders = () => {
   const updateOrderApi = async (id) => {
     const resData = await updateStatus(token, id, status);
     if (resData.data?.success) {
-      console.log("Updated Successfully");
+      dispatch(toggleAlert(true));
+      setTimeout(() => dispatch(toggleAlert(false)), 2000);
     }
   };
 
@@ -143,6 +151,7 @@ const Orders = () => {
           })}
         </div>
       )}
+      {alert && <Alert text="Succesfully updated" />}
     </main>
   );
 };

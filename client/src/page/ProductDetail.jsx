@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Alert from "../component/Alert";
 import Loading from "../component/Loading";
 import Popup from "../component/Popup";
 import Star from "../component/Star";
 import { addToCart } from "../redux/slicer/cartSlice";
-import { getPopup, togglePopup } from "../redux/slicer/popupSlice";
+import {
+  getAlert,
+  getPopup,
+  toggleAlert,
+  togglePopup,
+} from "../redux/slicer/popupSlice";
 import { getToken, getUser } from "../redux/slicer/userSlice";
 import {
   deleteProduct,
@@ -16,11 +22,13 @@ import {
 } from "../utils/productApi";
 
 const ProductDetail = () => {
+  const dispatch = useDispatch();
   const param = useParams();
   const navigate = useNavigate();
   const { id } = param;
   const user = JSON.parse(useSelector(getUser));
   const popup = useSelector(getPopup);
+  const alert = useSelector(getAlert);
   const token = useSelector(getToken);
   const [product, setProduct] = useState();
   const [productReview, setProductReview] = useState();
@@ -35,7 +43,6 @@ const ProductDetail = () => {
   const [reviewDependency, setReviewDependency] = useState();
   const [loadingProduct, setLoadingProduct] = useState();
   const [loadingReview, setLoadingReview] = useState();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProductApi = async () => {
@@ -82,6 +89,8 @@ const ProductDetail = () => {
       price: product.price,
     };
     dispatch(addToCart(data));
+    dispatch(toggleAlert(true));
+    setTimeout(() => dispatch(toggleAlert(false)), 2000);
   };
 
   //   Changing review in temporary state to send to backend
@@ -118,7 +127,7 @@ const ProductDetail = () => {
     const resData = await deleteProduct(id, token);
     if (resData.data.success) {
       navigate("/");
-      dispatch(togglePopup())
+      dispatch(togglePopup());
     }
   };
 
@@ -389,6 +398,8 @@ const ProductDetail = () => {
             ))}
         </>
       )}
+
+      {alert && <Alert text="Added to cart successfully" />}
     </main>
   );
 };
