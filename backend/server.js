@@ -4,7 +4,7 @@ require("dotenv").config();
 const connect = require("./config/dbConn");
 const port = process.env.PORT || 5000;
 const cloudinary = require("cloudinary").v2;
-
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLIENT_NAME,
