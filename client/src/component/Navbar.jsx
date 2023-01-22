@@ -37,7 +37,7 @@ const Navbar = () => {
       <nav className="flex h-full items-center justify-between w-[90vw] m-auto ">
         <div>
           <h1 className="font-bold text-xl md:text-2xl">
-            <Link to="/">Logo</Link>
+            <Link to="/">EcoNp</Link>
           </h1>
         </div>
 
