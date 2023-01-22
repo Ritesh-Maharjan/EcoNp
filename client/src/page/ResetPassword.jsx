@@ -24,8 +24,8 @@ const ResetPassword = () => {
           confirmPassword,
         };
         const resData = await resetPassword(params.token, data);
-        console.log(resData);
-        if (resData.data?.success) {
+        if (resData.data?.sucess) {
+          console.log("asdasd");
           setMsg("Password changed successfully");
           dispatch(login([resData.data.token, resData.data.user]));
           navigate("/");

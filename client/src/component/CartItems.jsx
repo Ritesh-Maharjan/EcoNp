@@ -11,7 +11,7 @@ const CartItems = ({ data }) => {
   const dispatch = useDispatch();
   return (
     <div className="relative flex h-[200px] justify-center gap-2 border-2 mx-2 p-2 rounded-lg">
-      <div className="flex-1">
+      <div className="flex-1 w-[200px]">
         <img
           src={data.image}
           alt="product"

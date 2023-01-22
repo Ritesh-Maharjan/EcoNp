@@ -181,43 +181,45 @@ const ProductDetail = () => {
                 <h2 className="md:text-xl">${`${product.price}`} CAD</h2>
 
                 {/* Quantity */}
-                <div className="flex gap-2">
-                  <span onClick={(e) => changeValue("increment")}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                  </span>
-                  <span className="text-black w-12 text-center border-2 bg-white">
-                    {quantity}
-                  </span>
-                  <span onClick={(e) => changeValue("decrement")}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 12h-15"
-                      />
-                    </svg>
-                  </span>
-                </div>
+                {user?.role !== "admin" && (
+                  <div className="flex gap-2">
+                    <span onClick={(e) => changeValue("increment")}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </span>
+                    <span className="text-black w-12 text-center border-2 bg-white">
+                      {quantity}
+                    </span>
+                    <span onClick={(e) => changeValue("decrement")}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19.5 12h-15"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                )}
 
                 {user?.role === "admin" ? (
                   <div className="flex gap-2">
@@ -251,66 +253,70 @@ const ProductDetail = () => {
 
           <section className="flex flex-col gap-4 m-auto w-[90vw] mt-10">
             {/* Post review */}
-            <div className="flex-1">
-              {user ? (
-                <div className="flex flex-col items-center">
-                  <h1 className="font-bold text-xl">Leave a review</h1>
+            {user?.role !== "admin" && (
+              <div className="flex-1">
+                {user ? (
+                  <div className="flex flex-col items-center">
+                    <h1 className="font-bold text-xl">Leave a review</h1>
 
-                  <form
-                    className="bg-white text-gray-700 font-semibold text-lg shadow-md rounded px-2 md:px-6 pt-6 pb-8 mb-4 flex flex-col gap-4"
-                    onSubmit={submitReviewApi}
-                  >
-                    <div className="flex gap-4">
-                      <label className="w-20">Rating:</label>
-                      <select
-                        className="w-32 text-gray-700 bg-slate-200 rounded-md p-1"
-                        name="rating"
-                        onChange={(e) => changeReview(e)}
-                        value={review.rating}
-                      >
-                        <option className="rounded-md bg-slate-200" value={1}>
-                          1
-                        </option>
-                        <option className="rounded-md bg-slate-200" value={2}>
-                          2
-                        </option>
-                        <option className="rounded-md bg-slate-200" value={3}>
-                          3
-                        </option>
-                        <option className="rounded-md bg-slate-200" value={4}>
-                          4
-                        </option>
-                        <option className="rounded-md bg-slate-200" value={5}>
-                          5
-                        </option>
-                      </select>
-                    </div>
-                    <div className="flex item-center gap-4">
-                      <label className="w-20">Comment:</label>
-                      <textarea
-                        placeholder="Leave your review"
-                        className="text-black w-[200px] h-[80px] border-2"
-                        name="comments"
-                        value={review.comments}
-                        onChange={(e) => changeReview(e)}
-                        required
-                      />
-                    </div>
-
-                    <button
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                      type="submit"
-                      onSubmit={(e) => submitReviewApi(e)}
-                      disabled={loadingReview}
+                    <form
+                      className="bg-white text-gray-700 font-semibold text-lg shadow-md rounded px-2 md:px-6 pt-6 pb-8 mb-4 flex flex-col gap-4"
+                      onSubmit={submitReviewApi}
                     >
-                      {loadingReview ? "Submitting" : "Submit"}
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <h1 className="text-center">Please log in to leave a review</h1>
-              )}
-            </div>
+                      <div className="flex gap-4">
+                        <label className="w-20">Rating:</label>
+                        <select
+                          className="w-32 text-gray-700 bg-slate-200 rounded-md p-1"
+                          name="rating"
+                          onChange={(e) => changeReview(e)}
+                          value={review.rating}
+                        >
+                          <option className="rounded-md bg-slate-200" value={1}>
+                            1
+                          </option>
+                          <option className="rounded-md bg-slate-200" value={2}>
+                            2
+                          </option>
+                          <option className="rounded-md bg-slate-200" value={3}>
+                            3
+                          </option>
+                          <option className="rounded-md bg-slate-200" value={4}>
+                            4
+                          </option>
+                          <option className="rounded-md bg-slate-200" value={5}>
+                            5
+                          </option>
+                        </select>
+                      </div>
+                      <div className="flex item-center gap-4">
+                        <label className="w-20">Comment:</label>
+                        <textarea
+                          placeholder="Leave your review"
+                          className="text-black w-[200px] h-[80px] border-2"
+                          name="comments"
+                          value={review.comments}
+                          onChange={(e) => changeReview(e)}
+                          required
+                        />
+                      </div>
+
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit"
+                        onSubmit={(e) => submitReviewApi(e)}
+                        disabled={loadingReview}
+                      >
+                        {loadingReview ? "Submitting" : "Submit"}
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <h1 className="text-center">
+                    Please log in to leave a review
+                  </h1>
+                )}
+              </div>
+            )}
 
             {/* Reviews  */}
             <div className="flex-1 flex flex-col items-center justify-center">

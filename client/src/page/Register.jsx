@@ -61,7 +61,7 @@ const Register = () => {
                 Name
               </label>
               <Field
-                className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="focus:drop-shadow-2xl shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
                 name="name"
                 type="text"
@@ -77,7 +77,7 @@ const Register = () => {
                 Email
               </label>
               <Field
-                className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="focus:drop-shadow-2xl shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 type="text"
                 placeholder="Email"
@@ -93,7 +93,7 @@ const Register = () => {
                 Password
               </label>
               <Field
-                className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="focus:drop-shadow-2xl shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
                 placeholder="******************"
