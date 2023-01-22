@@ -8,7 +8,7 @@ export const cartSlice = createSlice({
   name: "popup",
   initialState,
   reducers: {
-    togglePopup: (state, action) => {
+    togglePopup: (state) => {
       state.toggleStatus = !state.toggleStatus;
     },
   },
