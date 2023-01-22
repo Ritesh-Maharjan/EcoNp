@@ -54,7 +54,7 @@ const changePasswordApi = async (token, data) => {
   }
 };
 
-const deleteUser = async (token, data) => {
+const deleteUser = async (token) => {
   try {
     const resData = await axios.delete(`${BASE_URL}/user/delete`, {
       headers: {
@@ -67,4 +67,35 @@ const deleteUser = async (token, data) => {
   }
 };
 
-export { createUser, loginUser, changeEmailApi, changePasswordApi, deleteUser };
+const forgotPassword = async (email) => {
+  try {
+    const resData = await axios.post(`${BASE_URL}/user/forgotpassword`, {
+      email,
+    });
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
+const resetPassword = async (token, data) => {
+  try {
+    const resData = await axios.put(
+      `${BASE_URL}/user/password/reset/${token}`,
+      data
+    );
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
+export {
+  createUser,
+  loginUser,
+  changeEmailApi,
+  changePasswordApi,
+  deleteUser,
+  forgotPassword,
+  resetPassword,
+};

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/slicer/userSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -38,7 +38,7 @@ const Login = () => {
     }
   };
   return (
-    <section className="w-[90vw] min-h-[90vh] m-auto flex items-center justify-center">
+    <main className="w-[90vw] min-h-[90vh] m-auto flex items-center justify-center">
       <div className="w-full max-w-sm">
         <Formik
           initialValues={initialValues}
@@ -92,17 +92,14 @@ const Login = () => {
               >
                 Sign In
               </button>
-              <button
-                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
-              >
-                Forgot Password?
+              <button className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                <Link to="../forgottenpassword">Forgot Password?</Link>
               </button>
             </div>
           </Form>
         </Formik>
       </div>
-    </section>
+    </main>
   );
 };
 

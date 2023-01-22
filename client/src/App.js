@@ -14,6 +14,8 @@ import UpdateProduct from "./page/UpdateProduct";
 import Success from "./page/Success";
 import Orders from "./page/Orders";
 import Loggedin from "./component/Loggedin";
+import ForgottenPassword from "./page/ForgottenPassword";
+import ResetPassword from "./page/ResetPassword";
 
 function App() {
   return (
@@ -36,6 +38,11 @@ function App() {
               <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="login" element={<Login />} />
+            <Route path="forgottenpassword" element={<ForgottenPassword />} />
+            <Route
+              path="/password/reset/:token"
+              element={<ResetPassword />}
+            />
             <Route path="register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
