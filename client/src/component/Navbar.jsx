@@ -135,6 +135,11 @@ const Navbar = () => {
                       </Link>
                     </li>
                   )}
+                  <li className="hover:underline p-1">
+                    <Link to="/orders" onClick={() => setDisplayMenu(false)}>
+                      Orders
+                    </Link>
+                  </li>
                   <li
                     className="hover:underline p-1"
                     onClick={() => dispatch(logout())}
