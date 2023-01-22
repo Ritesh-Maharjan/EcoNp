@@ -13,6 +13,7 @@ import Shipping from "./page/Shipping";
 import UpdateProduct from "./page/UpdateProduct";
 import Success from "./page/Success";
 import Orders from "./page/Orders";
+import Loggedin from "./component/Loggedin";
 
 function App() {
   return (
@@ -28,10 +29,12 @@ function App() {
               <Route path="/create" element={<CreateProduct />} />
               <Route path="/update/:id" element={<UpdateProduct />} />
             </Route>
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/success" element={<Success />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/" element={<Loggedin />}>
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
