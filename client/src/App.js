@@ -11,6 +11,7 @@ import Register from "./page/Register";
 import Profile from "./page/Profile";
 import Shipping from "./page/Shipping";
 import UpdateProduct from "./page/UpdateProduct";
+import Success from "./page/Success";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/update/:id" element={<UpdateProduct />} />
             </Route>
             <Route path="/shipping" element={<Shipping />} />
+            <Route path="/success" element={<Success />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

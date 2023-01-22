@@ -15,4 +15,18 @@ const orderItemsApi = async (token, products) => {
   }
 };
 
-export { orderItemsApi };
+const createOrder = async (order, token) => {
+  try {
+    const resData = await axios.post(`${BASE_URL}/order/new`, order, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(resData);
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { orderItemsApi, createOrder };

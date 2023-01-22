@@ -7,14 +7,13 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 // Create Order
 const createOrder = asyncHandler(async (req, res, next) => {
-  const { shippingInfo, orderItems, paymentInfo, totalPrice } =
-    req.body;
+  const { shippingInfo, orderItems, paymentInfo, totalPrice } = req.body;
 
   const order = await Order.create({
     shippingInfo,
     orderItems,
     paymentInfo,
-    totalPrice,
+    totalPrice: Number(totalPrice),
     user: req.user._id,
   });
 
@@ -132,7 +131,7 @@ const payment = asyncHandler(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     line_items: allItems,
     mode: "payment",
-    success_url: `http://localhost:3000/orders`,
+    success_url: `http://localhost:3000/success`,
     cancel_url: `http://localhost:3000/cancel.html`,
   });
   res.status(200).json({

@@ -75,10 +75,10 @@ const Shipping = () => {
             id: resData.data.data.id,
             status: resData.data.data.status,
           },
-          totalPrice: { total },
+          totalPrice: total,
         };
         dispatch(setOrder(order));
-        window.location.replace(resData.data.session.url);
+        window.location.replace(resData.data.data.url);
       } else {
         setError(resData.response.data.message);
       }
