@@ -171,7 +171,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   });
 
   // creating url to reset token for our page
-  const resetPassowrdUrl = `${process.env.CLIENT_URL}/password/reset/${resetToken}`;
+  const resetPassowrdUrl = `${process.env.CLIENT_URL}password/reset/${resetToken}`;
 
   const message = `Your password reset token is :- \n\n ${resetPassowrdUrl}`;
 
