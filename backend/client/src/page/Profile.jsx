@@ -3,19 +3,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Popup from "../component/Popup";
-import { getPopup, togglePopup } from "../redux/slicer/popupSlice";
+import { getAlert, getPopup, togglePopup, toggleAlert } from "../redux/slicer/popupSlice";
 import { getToken, getUser, logout } from "../redux/slicer/userSlice";
 import {
   changeEmailApi,
   changePasswordApi,
   deleteUser,
 } from "../utils/userApi";
+import Alert from "../component/Alert";
 
 const Profile = () => {
   const navigate = useNavigate();
   const user = JSON.parse(useSelector(getUser));
   const token = useSelector(getToken);
   const popup = useSelector(getPopup);
+  const alert = useSelector(getAlert);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState();
@@ -30,6 +32,12 @@ const Profile = () => {
       const resData = await changeEmailApi(token, email);
       if (resData.data?.sucess) {
         setEmailError("");
+        setEmail("")
+        dispatch(toggleAlert(true));
+
+        setTimeout(() => {
+          dispatch(toggleAlert(false))
+        }, 5000)
       } else {
         setEmailError(resData.response.data.message);
       }
@@ -58,6 +66,11 @@ const Profile = () => {
           setOldPassword("");
           setNewPassword("");
           setConfirmPassword("");
+          dispatch(toggleAlert(true));
+
+          setTimeout(() => {
+            dispatch(toggleAlert(false))
+          }, 5000)
         } else {
           setPasswordError(resData.response.data.message);
         }
@@ -90,6 +103,9 @@ const Profile = () => {
           actionFunc={deleteAcc}
         />
       )}
+      {
+        alert && <Alert text="Successfully updated" />
+      }
       <div className="w-full max-w-sm">
         <div className="flex flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 gap-2 text-gray-800 ">
           <form
