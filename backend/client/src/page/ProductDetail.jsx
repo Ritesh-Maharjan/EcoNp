@@ -45,7 +45,6 @@ const ProductDetail = () => {
   const [loadingProduct, setLoadingProduct] = useState();
   const [loadingReview, setLoadingReview] = useState();
 
-  console.log(product);
   useEffect(() => {
     const getProductApi = async () => {
       setLoadingProduct(true);
