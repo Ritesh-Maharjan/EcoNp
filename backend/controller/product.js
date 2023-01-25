@@ -257,7 +257,7 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   product.reviews = reviews;
   product.numOfReviews = numOfReviews;
   // if there is no reviews left then rating should be 0;
-  if (numOfReviews) {
+  if (numOfReviews < 1) {
     product.ratings = 0;
   } else {
     product.ratings = avg / numOfReviews;

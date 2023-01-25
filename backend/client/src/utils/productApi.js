@@ -100,6 +100,20 @@ const getCategoryApi = async () => {
   }
 };
 
+// get categories
+const deleteReview = async (id, token) => {
+  try {
+    const resData = await axios.delete(`${BASE_URL}/product/reviews/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resData;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   createProduct,
   getAllProducts,
@@ -108,5 +122,6 @@ export {
   submitReview,
   getCategoryApi,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  deleteReview,
 };

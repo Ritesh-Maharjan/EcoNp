@@ -119,7 +119,7 @@ const payment = asyncHandler(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     line_items: allItems,
     mode: "payment",
-    success_url: `${process.env.CLIENT_URL}success`,
+    success_url: `${process.env.CLIENT_URL}/success`,
     cancel_url: `http://localhost:3000/cancel.html`,
   });
   res.status(200).json({

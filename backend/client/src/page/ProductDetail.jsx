@@ -16,6 +16,7 @@ import {
 import { getToken, getUser } from "../redux/slicer/userSlice";
 import {
   deleteProduct,
+  deleteReview,
   getProduct,
   getProductReview,
   submitReview,
@@ -44,6 +45,7 @@ const ProductDetail = () => {
   const [loadingProduct, setLoadingProduct] = useState();
   const [loadingReview, setLoadingReview] = useState();
 
+  console.log(product);
   useEffect(() => {
     const getProductApi = async () => {
       setLoadingProduct(true);
@@ -128,6 +130,13 @@ const ProductDetail = () => {
     if (resData.data.success) {
       navigate("/");
       dispatch(togglePopup());
+    }
+  };
+
+  const deleteReviewApi = async () => {
+    const resData = await deleteReview(id, token);
+    if (resData.data.success) {
+      setReviewDependency(!reviewDependency)
     }
   };
 
@@ -363,25 +372,46 @@ const ProductDetail = () => {
                           return (
                             <div
                               key={index}
-                              className="border-2 p-4 my-2 flex flex-col gap-4"
+                              className="border-2 p-4 my-2 flex flex-col gap-4 relative"
                             >
+                              {el.user === user?._id && (
+                                <div
+                                  className="absolute text-red-400 top-0 right-0"
+                                  onClick={() => deleteReviewApi()}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M6 18L18 6M6 6l12 12"
+                                    />
+                                  </svg>
+                                </div>
+                              )}
                               <div className="flex flex-col md:flex-row gap-4">
                                 <h1>
-                                  <span className="text-lg font-bold">
+                                  <span className="text-lg font-bold mr-2">
                                     User:
                                   </span>
                                   {el.name}
                                 </h1>
                                 <div className="flex">
-                                  <span className="text-lg font-bold">
+                                  <span className="text-lg font-bold mr-2">
                                     Rating:
                                   </span>
                                   <Star ratings={el.rating} />
                                 </div>
                               </div>
                               <p>
-                                <span className="text-lg font-bold">
-                                  Comments:{" "}
+                                <span className="text-lg font-bold mr-2">
+                                  Comments:
                                 </span>
                                 {el.comments}
                               </p>
